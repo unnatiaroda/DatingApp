@@ -50,7 +50,7 @@ public class AccountController : BaseApiController
         var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
         if (user == null) return Unauthorized("Invalid username");
 
-        using var hmac = new HMACSHA256(user.PasswordSalt);
+        using var hmac = new HMACSHA512(user.PasswordSalt);
         var computerHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
         for (int i = 0; i < computerHash.Length; i++)
